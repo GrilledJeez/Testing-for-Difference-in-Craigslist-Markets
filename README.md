@@ -44,13 +44,13 @@ Four ```csv``` files, the results of the webscraping, are stored in the ```data`
 
 To prepare the dataset for analyses:
 
-import pandas as pd
+`import pandas as pd
 
-moto = pd.read_csv('data/craigslist_motorcycles_8APR2020.csv')
+moto = pd.read_csv('data/craigslist_motorcycles_8APR2020.csv')`
 
 Seperate dataframe by city and store as new variables:
 
-atx_m = moto[moto['city'] == 'Austin']
+`atx_m = moto[moto['city'] == 'Austin']
 la_m = moto[moto['city'] == 'Los Angeles']
 sf_m = moto[moto['city'] == 'San Francisco']
 stl_m = moto[moto['city'] == 'Seattle']
@@ -59,16 +59,15 @@ den_m = moto[moto['city'] == 'Denver']
 pit_m = moto[moto['city'] == 'Pittsburgh']
 atl_m = moto[moto['city'] == 'Atlanta']
 nyc_m = moto[moto['city'] == 'New York City']
-knx_m = moto[moto['city'] == 'Knoxville']
+knx_m = moto[moto['city'] == 'Knoxville']`
 
 Then store these new variables into a list:
 
-city_codes = [atx_m, la_m, sf_m, stl_m, chi_m, 
-den_m, pit_m, atl_m, nyc_m, knx_m]
+`city_codes = [atx_m, la_m, sf_m, stl_m, chi_m, den_m, pit_m, atl_m, nyc_m, knx_m]`
 
 Now import the following imports and input the function below:
 
-import scipy.stats as stats
+`import scipy.stats as stats
 import scipy as sp
 import numpy as np
 import pandas as pd
@@ -108,21 +107,20 @@ def welch_test_and_plot(test_city, city_list):
         plt.ylabel('Probability Density', fontsize = 14, color = 'black')
         ax.set_title("{}-{} Welch Test Results".format(test_city.iloc[1,5], city.iloc[1,5]), fontsize = 20, color = 'black')
         plt.tight_layout()
-        plt.show()
+        plt.show()`
 
 Save your test cities into a new list to call to compare against.
 
-test_cities = [la_m, sf_m, stl_m, chi_m, 
-den_m, pit_m, atl_m, nyc_m, knx_m]
+`test_cities = [la_m, sf_m, stl_m, chi_m, den_m, pit_m, atl_m, nyc_m, knx_m]`
 
 Since we will be testing Austin as the main city, you will use atx_m as your 'test_city'.
 Run the following and observe your results.
 
-welch_test_and_plot(atx_m, test_cities)
+`welch_test_and_plot(atx_m, test_cities)`
 
 Now we must test against each of these with our Bonferroni correction. Input the following function which has the Bonferroni correction formul programmed into it.
 
-def bonferroni_test(city_1, test_city_list):
+`def bonferroni_test(city_1, test_city_list):
     bonferroni = round(.05/len(test_city_list), 4)
     reject_cities = []
     for city in test_city_list:
@@ -148,11 +146,11 @@ def bonferroni_test(city_1, test_city_list):
         print("We FAIL TO REJECT the null hypothesis.")
         print("")
         print("There is no significant difference in the mean value of motorcycles")
-        print("in the craigslist marketplace between Austin and other cities.")
+        print("in the craigslist marketplace between Austin and other cities.")`
 
 Now you are ready to test Austin against your test cities. Run the following code:
 
-bonferroni_test(atx_m, test_cities)
+`bonferroni_test(atx_m, test_cities)`
 
 # Results
 
