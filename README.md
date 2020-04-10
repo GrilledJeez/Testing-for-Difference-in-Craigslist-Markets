@@ -72,7 +72,7 @@ knx_m = moto[moto['city'] == 'Knoxville']
 
 Then store these new variables into a list:
 
-`city_codes = [atx_m, la_m, sf_m, stl_m, chi_m, den_m, pit_m, atl_m, nyc_m, knx_m]`
+city_codes = [atx_m, la_m, sf_m, stl_m, chi_m, den_m, pit_m, atl_m, nyc_m, knx_m]\
 
 Now import the following imports and input the function below:
 
@@ -86,73 +86,73 @@ import matplotlib.pylab as pylab\
 %matplotlib inline\
 plt.style.use('ggplot')\
 
-def welch_test_and_plot(test_city, city_list):
-    for city in city_list:
-        print("{} vs {}".format(test_city.iloc[0,5], city.iloc[0,5]))
-        test_statistic, p_value = np.round(stats.ttest_ind(test_city['price'], city['price']), 4)
-        ss1 = len(test_city['price'])
-        ss2 = len(city['price'])
-        deg_f = math.floor(
-            ((np.var(test_city['price'])/ss1 + np.var(city['price'])/ss2)**(2.00)) / 
-            ((np.var(test_city['price'])/ss1)**(2)/(ss1 - 1) + (np.var(city['price'])/ss2)**(2)/(ss2 - 1)))
-        x = np.linspace(-5, 5, num=400)
-        fig, ax = plt.subplots(1, figsize=(12, 4))
-        students = stats.t(deg_f)
-        ax.plot(x, students.pdf(x), linewidth=2, label="Degree of Freedom: {:2.0f}"
-                .format(deg_f))
-        _ = ax.fill_between(x, students.pdf(x), where=(x >= abs(test_statistic)), color="red",
-                alpha=0.25, label = "P Value:\
-                    {:2.4f}".format(p_value))
-        _ = ax.fill_between(x, students.pdf(x), where=(x <= -(abs(test_statistic))), color="red", 
-                alpha=0.25)
-        ax.axvline(x=test_statistic, linewidth=4, color='r', label = "Test Stat:\
-                 {:2.4f}".format(test_statistic), linestyle = '--')
-        ax.legend(bbox_to_anchor=(1,1), loc = 'upper left')
-        plt.xlabel('x', fontsize = 14, color = 'black')
-        plt.ylabel('Probability Density', fontsize = 14, color = 'black')
-        ax.set_title("{}-{} Welch Test Results".format(test_city.iloc[1,5], city.iloc[1,5]), fontsize = 20, color = 'black')
-        plt.tight_layout()
-        plt.show()
+def welch_test_and_plot(test_city, city_list):\
+    for city in city_list:\
+        print("{} vs {}".format(test_city.iloc[0,5], city.iloc[0,5]))\
+        test_statistic, p_value = np.round(stats.ttest_ind(test_city['price'], city['price']), 4)\
+        ss1 = len(test_city['price'])\
+        ss2 = len(city['price'])\
+        deg_f = math.floor(\
+            ((np.var(test_city['price'])/ss1 + np.var(city['price'])/ss2)**(2.00)) / \
+            ((np.var(test_city['price'])/ss1)**(2)/(ss1 - 1) + (np.var(city['price'])/ss2)**(2)/(ss2 \- 1)))
+        x = np.linspace(-5, 5, num=400)\
+        fig, ax = plt.subplots(1, figsize=(12, 4))\
+        students = stats.t(deg_f)\
+        ax.plot(x, students.pdf(x), linewidth=2, label="Degree of Freedom: {:2.0f}"\
+                .format(deg_f))\
+        _ = ax.fill_between(x, students.pdf(x), where=(x >= abs(test_statistic)), color="red",\
+                alpha=0.25, label = "P Value:\\
+                    {:2.4f}".format(p_value))\
+        _ = ax.fill_between(x, students.pdf(x), where=(x <= -(abs(test_statistic))), color="red", \
+                alpha=0.25)\
+        ax.axvline(x=test_statistic, linewidth=4, color='r', label = "Test Stat:\\
+                 {:2.4f}".format(test_statistic), linestyle = '--')\
+        ax.legend(bbox_to_anchor=(1,1), loc = 'upper left')\
+        plt.xlabel('x', fontsize = 14, color = 'black')\
+        plt.ylabel('Probability Density', fontsize = 14, color = 'black')\
+        ax.set_title("{}-{} Welch Test Results".format(test_city.iloc[1,5], city.iloc[1,5]), fontsize\ = 20, color = 'black')\
+        plt.tight_layout()\
+        plt.show()\
         
         
 Save your test cities into a new list to call to compare against.
 
-`test_cities = [la_m, sf_m, stl_m, chi_m, den_m, pit_m, atl_m, nyc_m, knx_m]`
+test_cities = [la_m, sf_m, stl_m, chi_m, den_m, pit_m, atl_m, nyc_m, knx_m]\
 
 Since we will be testing Austin as the main city, you will use atx_m as your 'test_city'.
 Run the following and observe your results.
 
-`welch_test_and_plot(atx_m, test_cities)`
+welch_test_and_plot(atx_m, test_cities)\
 
 Now we must test against each of these with our Bonferroni correction. Input the following function which has the Bonferroni correction formul programmed into it.
 
-`def bonferroni_test(city_1, test_city_list):
-    bonferroni = round(.05/len(test_city_list), 4)
-    reject_cities = []
-    for city in test_city_list:
-        test_statistic, p_value = np.round(stats.ttest_ind(city_1['price'], city['price']),4)
-        if p_value <= bonferroni:
-            reject_cities.append(city.iloc[0,5])
-        else:
-            continue          
-    if len(reject_cities) > 0:
-        print("We REJECT the null hypothesis.")
-        print("")
-        print("There is a significant difference in the mean value of motorcycles")
-        print("in the craigslist marketplace between {} and other cities.".format(city_1.iloc[0,5]))
-        print("")
-        print("{} of our {} p values fell outside our Bonferroni correction.".
-              format(len(reject_cities), len(test_city_list)))
-        print("")
-        print("These cities are significantly different from {}:".format(city_1.iloc[0,5]))
-        for _ in reject_cities:
-            print(_)
-    else:
-        print("")
-        print("We FAIL TO REJECT the null hypothesis.")
-        print("")
-        print("There is no significant difference in the mean value of motorcycles")
-        print("in the craigslist marketplace between Austin and other cities.")`
+def bonferroni_test(city_1, test_city_list):\
+    bonferroni = round(.05/len(test_city_list), 4)\
+    reject_cities = []\
+    for city in test_city_list:\
+        test_statistic, p_value = np.round(stats.ttest_ind(city_1['price'], city['price']),4)\
+        if p_value <= bonferroni:\
+            reject_cities.append(city.iloc[0,5])\
+        else:\
+            continue          \
+    if len(reject_cities) > 0:\
+        print("We REJECT the null hypothesis.")\
+        print("")\
+        print("There is a significant difference in the mean value of motorcycles")\
+        print("in the craigslist marketplace between {} and other cities.".format(city_1.iloc[0,5]))\
+        print("")\
+        print("{} of our {} p values fell outside our Bonferroni correction.".\
+              format(len(reject_cities), len(test_city_list)))\
+        print("")\
+        print("These cities are significantly different from {}:".format(city_1.iloc[0,5]))\
+        for _ in reject_cities:\
+            print(_)\
+    else:\
+        print("")\
+        print("We FAIL TO REJECT the null hypothesis.")\
+        print("")\
+        print("There is no significant difference in the mean value of motorcycles")\
+        print("in the craigslist marketplace between Austin and other cities.")\
 
 Now you are ready to test Austin against your test cities. Run the following code:
 
