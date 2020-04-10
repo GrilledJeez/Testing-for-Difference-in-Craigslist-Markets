@@ -50,31 +50,22 @@ moto = pd.read_csv('data/craigslist_motorcycles_8APR2020.csv')`
 
 Seperate dataframe by city and store as new variables:
 
-atx_m = moto[moto['city'] == 'Austin']
-
-la_m = moto[moto['city'] == 'Los Angeles']
-
-sf_m = moto[moto['city'] == 'San Francisco']
-
-stl_m = moto[moto['city'] == 'Seattle']
-
-chi_m = moto[moto['city'] == 'Chicago']
-
-den_m = moto[moto['city'] == 'Denver']
-
-pit_m = moto[moto['city'] == 'Pittsburgh']
-
-atl_m = moto[moto['city'] == 'Atlanta']
-
-nyc_m = moto[moto['city'] == 'New York City']
-
-knx_m = moto[moto['city'] == 'Knoxville']
+atx_m = moto[moto['city'] == 'Austin']\
+la_m = moto[moto['city'] == 'Los Angeles']\
+sf_m = moto[moto['city'] == 'San Francisco']\
+stl_m = moto[moto['city'] == 'Seattle']\
+chi_m = moto[moto['city'] == 'Chicago']\
+den_m = moto[moto['city'] == 'Denver']\
+pit_m = moto[moto['city'] == 'Pittsburgh']\
+atl_m = moto[moto['city'] == 'Atlanta']\
+nyc_m = moto[moto['city'] == 'New York City']\
+knx_m = moto[moto['city'] == 'Knoxville']\
 
 Then store these new variables into a list:
 
 city_codes = [atx_m, la_m, sf_m, stl_m, chi_m, den_m, pit_m, atl_m, nyc_m, knx_m]\
 
-Now import the following imports and input the function below:
+Now import the following imports and input the function below. You may need to copy from the 'Raw' version of the Readme or may have to put in the correct tabs for the functions.
 
 import scipy.stats as stats\
 import scipy as sp\
@@ -124,7 +115,7 @@ Run the following and observe your results.
 
 welch_test_and_plot(atx_m, test_cities)\
 
-Now we must test against each of these with our Bonferroni correction. Input the following function which has the Bonferroni correction formul programmed into it.
+Now we must test against each of these with our Bonferroni correction. Input the following function which has the Bonferroni correction formul programmed into it. You may need to copy from the 'Raw' version of the Readme or may have to put in the correct tabs for the functions.
 
 def bonferroni_test(city_1, test_city_list):\
     bonferroni = round(.05/len(test_city_list), 4)\
