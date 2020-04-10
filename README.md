@@ -77,35 +77,34 @@ import matplotlib.pylab as pylab
 %matplotlib inline
 plt.style.use('ggplot')
 
-
->def welch_test_and_plot(test_city, city_list):
->    for city in city_list:
->        print("{} vs {}".format(test_city.iloc[0,5], city.iloc[0,5]))
->        test_statistic, p_value = np.round(stats.ttest_ind(test_city['price'], city['price']), 4)
->        ss1 = len(test_city['price'])
->        ss2 = len(city['price'])
->        deg_f = math.floor(
->            ((np.var(test_city['price'])/ss1 + np.var(city['price'])/ss2)**(2.00)) / 
->            ((np.var(test_city['price'])/ss1)**(2)/(ss1 - 1) + (np.var(city['price'])/ss2)**(2)/(ss2 - 1))
->        )
->        x = np.linspace(-5, 5, num=400)
->        fig, ax = plt.subplots(1, figsize=(12, 4))
->        students = stats.t(deg_f)
->        ax.plot(x, students.pdf(x), linewidth=2, label="Degree of Freedom: {:2.0f}"
->                .format(deg_f))
->        _ = ax.fill_between(x, students.pdf(x), where=(x >= abs(test_statistic)), color="red",
->                alpha=0.25, label = "P Value:\
->                    {:2.4f}".format(p_value))
->        _ = ax.fill_between(x, students.pdf(x), where=(x <= -(abs(test_statistic))), color="red", 
->                alpha=0.25)
->        ax.axvline(x=test_statistic, linewidth=4, color='r', label = "Test Stat:\
->                 {:2.4f}".format(test_statistic), linestyle = '--')
->        ax.legend(bbox_to_anchor=(1,1), loc = 'upper left')
->        plt.xlabel('x', fontsize = 14, color = 'black')
->        plt.ylabel('Probability Density', fontsize = 14, color = 'black')
->        ax.set_title("{}-{} Welch Test Results".format(test_city.iloc[1,5], city.iloc[1,5]), fontsize = 20, color = 'black')
->        plt.tight_layout()
->        plt.show()
+<code>def welch_test_and_plot(test_city, city_list):
+    for city in city_list:
+        print("{} vs {}".format(test_city.iloc[0,5], city.iloc[0,5]))
+        test_statistic, p_value = np.round(stats.ttest_ind(test_city['price'], city['price']), 4)
+        ss1 = len(test_city['price'])
+        ss2 = len(city['price'])
+        deg_f = math.floor(
+            ((np.var(test_city['price'])/ss1 + np.var(city['price'])/ss2)**(2.00)) / 
+            ((np.var(test_city['price'])/ss1)**(2)/(ss1 - 1) + (np.var(city['price'])/ss2)**(2)/(ss2 - 1))
+        )
+        x = np.linspace(-5, 5, num=400)
+        fig, ax = plt.subplots(1, figsize=(12, 4))
+        students = stats.t(deg_f)
+        ax.plot(x, students.pdf(x), linewidth=2, label="Degree of Freedom: {:2.0f}"
+                .format(deg_f))
+        _ = ax.fill_between(x, students.pdf(x), where=(x >= abs(test_statistic)), color="red",
+                alpha=0.25, label = "P Value:\
+                    {:2.4f}".format(p_value))
+        _ = ax.fill_between(x, students.pdf(x), where=(x <= -(abs(test_statistic))), color="red", 
+                alpha=0.25)
+        ax.axvline(x=test_statistic, linewidth=4, color='r', label = "Test Stat:\
+                 {:2.4f}".format(test_statistic), linestyle = '--')
+        ax.legend(bbox_to_anchor=(1,1), loc = 'upper left')
+        plt.xlabel('x', fontsize = 14, color = 'black')
+        plt.ylabel('Probability Density', fontsize = 14, color = 'black')
+        ax.set_title("{}-{} Welch Test Results".format(test_city.iloc[1,5], city.iloc[1,5]), fontsize = 20, color = 'black')
+        plt.tight_layout()
+        plt.show()</code>
 
 Save your test cities into a new list to call to compare against.
 
